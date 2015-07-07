@@ -5,7 +5,7 @@ from distutils.core import setup
 
 setup(
     name='humanhash3',
-    version='0.0.3',
+    version='0.0.4',
     description='Human-readable representations of digests.',
     author='Zachary Voase',
     author_email='z@zacharyvoase.com',
