@@ -123,6 +123,10 @@ class HumanHasher(object):
             >>> digest = '60ad8d0d871b6095808297'
             >>> HumanHasher().humanize(digest)
             'sodium-magnesium-nineteen-hydrogen'
+            >>> HumanHasher().humanize(digest, words=6)
+            'hydrogen-pasta-mississippi-august-may-lithium'
+            >>> HumanHasher().humanize(digest, separator='*')
+            'sodium*magnesium*nineteen*hydrogen'
         """
         # Map the compressed byte values through the word list.
         return separator.join(self.humanize_list(hexdigest, words))
