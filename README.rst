@@ -3,10 +3,16 @@ humanhash
 
 humanhash provides human-readable representations of digests.
 
+.. image:: https://travis-ci.org/blag/humanhash.svg?branch=master
+    :target: https://travis-ci.org/blag/humanhash
+
+.. image:: https://coveralls.io/repos/github/blag/humanhash/badge.svg?branch=master
+    :target: https://coveralls.io/github/blag/humanhash?branch=master
+
 Example
 -------
 
-::
+.. code-block:: python
 
     >>> import humanhash
 
