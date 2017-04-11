@@ -10,17 +10,17 @@ import uuid as uuidlib
 import sys
 
 if sys.version_info.major == 3:
-    #Map returns an iterator in PY3K
+    # Map returns an iterator in PY3K
     py3_map = map
 
     def map(*args, **kwargs):
         return [i for i in py3_map(*args, **kwargs)]
 
-    #Functionality of xrange is in range now
+    # Functionality of xrange is in range now
     xrange = range
 
-    #Reduce moved to functools
-    #http://www.artima.com/weblogs/viewpost.jsp?thread=98196
+    # Reduce moved to functools
+    # http://www.artima.com/weblogs/viewpost.jsp?thread=98196
     from functools import reduce
 
 
@@ -63,6 +63,12 @@ DEFAULT_WORDLIST = (
     'zulu')
 
 
+# Use a simple XOR checksum-like function for compression.
+# checksum = lambda _bytes: reduce(operator.xor, _bytes, 0)
+def checksum(checksum_bytes):
+    return reduce(operator.xor, checksum_bytes, 0)
+
+
 class HumanHasher(object):
 
     """
@@ -80,11 +86,28 @@ class HumanHasher(object):
 
     def __init__(self, wordlist=DEFAULT_WORDLIST):
         if len(wordlist) != 256:
-            raise ArgumentError("Wordlist must have exactly 256 items")
+            raise ValueError("Wordlist must have exactly 256 items")
         self.wordlist = wordlist
 
-    def humanize(self, hexdigest, words=4, separator='-'):
+    def humanize_list(self, hexdigest, words=4):
+        """
+        Human a given hexadecimal digest, returning a list of words.
 
+        Change the number of words output by specifying `words`.
+
+            >>> digest = '60ad8d0d871b6095808297'
+            >>> HumanHasher().humanize_list(digest)
+            ['sodium', 'magnesium', 'nineteen', 'hydrogen']
+        """
+        # Gets a list of byte values between 0-255.
+        bytes_ = map(lambda x: int(x, 16),
+                     map(''.join, zip(hexdigest[::2], hexdigest[1::2])))
+        # Compress an arbitrary number of bytes to `words`.
+        compressed = self.compress(bytes_, words)
+
+        return [str(self.wordlist[byte]) for byte in compressed]
+
+    def humanize(self, hexdigest, words=4, separator='-'):
         """
         Humanize a given hexadecimal digest.
 
@@ -95,17 +118,11 @@ class HumanHasher(object):
             >>> HumanHasher().humanize(digest)
             'sodium-magnesium-nineteen-hydrogen'
         """
-
-        # Gets a list of byte values between 0-255.
-        bytes = map(lambda x: int(x, 16),
-                    map(''.join, zip(hexdigest[::2], hexdigest[1::2])))
-        # Compress an arbitrary number of bytes to `words`.
-        compressed = self.compress(bytes, words)
         # Map the compressed byte values through the word list.
-        return separator.join(str(self.wordlist[byte]) for byte in compressed)
+        return separator.join(self.humanize_list(hexdigest, words))
 
     @staticmethod
-    def compress(bytes, target):
+    def compress(bytes_, target):
 
         """
         Compress a list of byte values to a fixed target length.
@@ -123,21 +140,20 @@ class HumanHasher(object):
             ValueError: Fewer input bytes than requested output
         """
 
-        length = len(bytes)
+        bytes_list = list(bytes_)
+
+        length = len(bytes_list)
         if target > length:
             raise ValueError("Fewer input bytes than requested output")
 
         # Split `bytes` into `target` segments.
         seg_size = length // target
-        segments = [bytes[i * seg_size:(i + 1) * seg_size]
-                    for i in xrange(target)]
+        segments = [bytes_list[i * seg_size:(i + 1) * seg_size]
+                    for i in range(target)]
         # Catch any left-over bytes in the last segment.
-        segments[-1].extend(bytes[target * seg_size:])
+        segments[-1].extend(bytes_list[target * seg_size:])
 
-        # Use a simple XOR checksum-like function for compression.
-        checksum = lambda bytes: reduce(operator.xor, bytes, 0)
-        checksums = map(checksum, segments)
-        return checksums
+        return map(checksum, segments)
 
     def uuid(self, **params):
 
