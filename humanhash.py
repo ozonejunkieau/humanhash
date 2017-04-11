@@ -190,6 +190,7 @@ class HumanHasher(object):
 DEFAULT_HASHER = HumanHasher()
 uuid = DEFAULT_HASHER.uuid
 humanize = DEFAULT_HASHER.humanize
+humanize_list = DEFAULT_HASHER.humanize_list
 
 if __name__ == "__main__":
     import doctest
