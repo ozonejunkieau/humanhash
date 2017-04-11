@@ -1,7 +1,9 @@
 *.egg-info/
 *.pyc
 *.pyo
+.coverage
 .DS_Store
 MANIFEST
 build/
 dist/
+htmlcov/

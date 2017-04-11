@@ -85,6 +85,12 @@ class HumanHasher(object):
     """
 
     def __init__(self, wordlist=DEFAULT_WORDLIST):
+        """
+            >>> HumanHasher(wordlist=[])
+            Traceback (most recent call last):
+              ...
+            ValueError: Wordlist must have exactly 256 items
+        """
         if len(wordlist) != 256:
             raise ValueError("Wordlist must have exactly 256 items")
         self.wordlist = wordlist
@@ -127,14 +133,14 @@ class HumanHasher(object):
         """
         Compress a list of byte values to a fixed target length.
 
-            >>> bytes = [96, 173, 141, 13, 135, 27, 96, 149, 128, 130, 151]
-            >>> HumanHasher.compress(bytes, 4)
+            >>> bytes_ = [96, 173, 141, 13, 135, 27, 96, 149, 128, 130, 151]
+            >>> list(HumanHasher.compress(bytes_, 4))
             [205, 128, 156, 96]
 
         Attempting to compress a smaller number of bytes to a larger number is
         an error:
 
-            >>> HumanHasher.compress(bytes, 15)  # doctest: +ELLIPSIS
+            >>> HumanHasher.compress(bytes_, 15)  # doctest: +ELLIPSIS
             Traceback (most recent call last):
             ...
             ValueError: Fewer input bytes than requested output
@@ -162,8 +168,17 @@ class HumanHasher(object):
 
         Returns `(human_repr, full_digest)`. Accepts the same keyword arguments
         as :meth:`humanize` (they'll be passed straight through).
-        """
 
+            >>> import re
+            >>> hh = HumanHasher()
+            >>> result = hh.uuid()
+            >>> type(result) == tuple
+            True
+            >>> bool(re.match(r'^(\w+-){3}\w+$', result[0]))
+            True
+            >>> bool(re.match(r'^[0-9a-f]{32}$', result[1]))
+            True
+        """
         digest = str(uuidlib.uuid4()).replace('-', '')
         return self.humanize(digest, **params), digest
 
@@ -171,3 +186,10 @@ class HumanHasher(object):
 DEFAULT_HASHER = HumanHasher()
 uuid = DEFAULT_HASHER.uuid
 humanize = DEFAULT_HASHER.humanize
+
+if __name__ == "__main__":
+    import doctest
+    # http://stackoverflow.com/a/25691978/6461688
+    # This will force Python to exit with the number of failing tests as the
+    # exit code, which should be interpreted as a failing test by Travis.
+    sys.exit(doctest.testmod())
