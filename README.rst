@@ -3,11 +3,20 @@ humanhash
 
 humanhash provides human-readable representations of digests.
 
-.. image:: https://travis-ci.org/blag/humanhash.svg?branch=master
+.. image:: https://img.shields.io/travis/blag/humanhash.svg
     :target: https://travis-ci.org/blag/humanhash
 
-.. image:: https://coveralls.io/repos/github/blag/humanhash/badge.svg?branch=master
-    :target: https://coveralls.io/github/blag/humanhash?branch=master
+.. image:: https://img.shields.io/coveralls/blag/humanhash.svg
+    :target: https://coveralls.io/github/blag/humanhash
+
+.. image:: https://img.shields.io/pypi/v/humanhash3.svg
+    :target: https://pypi.python.org/pypi/humanhash3
+
+.. image:: https://img.shields.io/pypi/l/humanhash3.svg
+    :target: https://github.com/blag/humanhash/blob/master/UNLICENSE
+
+.. image:: https://img.shields.io/pypi/pyversions/humanhash3.svg
+    :target: https://github.com/blag/humanhash/blob/master/.travis.yml
 
 Example
 -------
