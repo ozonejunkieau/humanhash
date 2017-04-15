@@ -3,10 +3,14 @@
 
 from distutils.core import setup
 
+with open('README.rst', 'r') as f:
+    long_description = f.read()
+
 setup(
     name='humanhash3',
-    version='0.0.4',
+    version='0.0.5',
     description='Human-readable representations of digests.',
+    long_description=long_description,
     author='Zachary Voase',
     author_email='z@zacharyvoase.com',
     url='https://github.com/blag/humanhash',
