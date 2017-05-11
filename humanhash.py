@@ -7,6 +7,7 @@ functions. For tighter control over the output, see :class:`HumanHasher`.
 
 import operator
 import uuid as uuidlib
+import math
 import sys
 
 if sys.version_info.major == 3:
@@ -103,7 +104,7 @@ class HumanHasher(object):
 
             >>> digest = '60ad8d0d871b6095808297'
             >>> HumanHasher().humanize_list(digest)
-            ['sodium', 'magnesium', 'nineteen', 'hydrogen']
+            ['equal', 'monkey', 'lake', 'beryllium']
         """
         # Gets a list of byte values between 0-255.
         bytes_ = map(lambda x: int(x, 16),
@@ -122,11 +123,11 @@ class HumanHasher(object):
 
             >>> digest = '60ad8d0d871b6095808297'
             >>> HumanHasher().humanize(digest)
-            'sodium-magnesium-nineteen-hydrogen'
+            'equal-monkey-lake-beryllium'
             >>> HumanHasher().humanize(digest, words=6)
-            'hydrogen-pasta-mississippi-august-may-lithium'
+            'sodium-magnesium-nineteen-william-alanine-nebraska'
             >>> HumanHasher().humanize(digest, separator='*')
-            'sodium*magnesium*nineteen*hydrogen'
+            'equal*monkey*lake*beryllium'
         """
         # Map the compressed byte values through the word list.
         return separator.join(self.humanize_list(hexdigest, words))
@@ -139,31 +140,38 @@ class HumanHasher(object):
 
             >>> bytes_ = [96, 173, 141, 13, 135, 27, 96, 149, 128, 130, 151]
             >>> list(HumanHasher.compress(bytes_, 4))
-            [205, 128, 156, 96]
+            [64, 145, 117, 21]
 
-        Attempting to compress a smaller number of bytes to a larger number is
-        an error:
+        If there are less than the target number bytes, return input bytes
 
-            >>> HumanHasher.compress(bytes_, 15)  # doctest: +ELLIPSIS
-            Traceback (most recent call last):
-            ...
-            ValueError: Fewer input bytes than requested output
+            >>> list(HumanHasher.compress(bytes_, 15))  # doctest: +ELLIPSIS
+            [96, 173, 141, 13, 135, 27, 96, 149, 128, 130, 151]
         """
 
         bytes_list = list(bytes_)
 
         length = len(bytes_list)
-        if target > length:
-            raise ValueError("Fewer input bytes than requested output")
+        # If there are less than the target number bytes, return input bytes
+        if target >= length:
+            return bytes_
 
-        # Split `bytes` into `target` segments.
-        seg_size = length // target
-        segments = [bytes_list[i * seg_size:(i + 1) * seg_size]
-                    for i in range(target)]
-        # Catch any left-over bytes in the last segment.
-        segments[-1].extend(bytes_list[target * seg_size:])
+        # Split `bytes` evenly into `target` segments
+        # Each segment hashes `seg_size` bytes, rounded down for some
+        seg_size = float(length) / float(target)
+        # Initialize `target` number of segments
+        segments = [0] * target
+        seg_num = 0
 
-        return map(checksum, segments)
+        # Use a simple XOR checksum-like function for compression
+        for i, byte in enumerate(bytes_list):
+            # Divide the byte index by the segment size to assign its segment
+            # Floor to create a valid segment index
+            # Min to ensure the index is within `target`
+            seg_num = min(int(math.floor(i / seg_size)), target-1)
+            # Apply XOR to the existing segment and the byte
+            segments[seg_num] = operator.xor(segments[seg_num], byte)
+
+        return segments
 
     def uuid(self, **params):
 
