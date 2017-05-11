@@ -10,7 +10,7 @@ import uuid as uuidlib
 import math
 import sys
 
-if sys.version_info.major == 3:
+if sys.version_info.major == 3:  # pragma: nocover
     # Map returns an iterator in PY3K
     py3_map = map
 
@@ -190,7 +190,7 @@ uuid = DEFAULT_HASHER.uuid
 humanize = DEFAULT_HASHER.humanize
 humanize_list = DEFAULT_HASHER.humanize_list
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: nocover
     import doctest
     # http://stackoverflow.com/a/25691978/6461688
     # This will force Python to exit with the number of failing tests as the
