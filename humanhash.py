@@ -20,10 +20,6 @@ if sys.version_info.major == 3:
     # Functionality of xrange is in range now
     xrange = range
 
-    # Reduce moved to functools
-    # http://www.artima.com/weblogs/viewpost.jsp?thread=98196
-    from functools import reduce
-
 
 DEFAULT_WORDLIST = (
     'ack', 'alabama', 'alanine', 'alaska', 'alpha', 'angel', 'apart', 'april',
@@ -62,12 +58,6 @@ DEFAULT_WORDLIST = (
     'washington', 'west', 'whiskey', 'white', 'william', 'winner', 'winter',
     'wisconsin', 'wolfram', 'wyoming', 'xray', 'yankee', 'yellow', 'zebra',
     'zulu')
-
-
-# Use a simple XOR checksum-like function for compression.
-# checksum = lambda _bytes: reduce(operator.xor, _bytes, 0)
-def checksum(checksum_bytes):
-    return reduce(operator.xor, checksum_bytes, 0)
 
 
 class HumanHasher(object):
