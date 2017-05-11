@@ -8,7 +8,7 @@ with open('README.rst', 'r') as f:
 
 setup(
     name='humanhash3',
-    version='0.0.5',
+    version='0.0.6',
     description='Human-readable representations of digests.',
     long_description=long_description,
     author='Zachary Voase',
