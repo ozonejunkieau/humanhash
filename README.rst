@@ -34,6 +34,16 @@ Example
     >>> humanhash.uuid()
     ('potato-oranges-william-friend', '9d2278759ae24698b1345525bd53358b')
 
+Install
+-------
+
+This module is available on PyPI as the ``humanhash3`` package. You can install
+it with ``pip``:
+
+.. code-block:: bash
+
+    $ pip install humanhash3
+
 Caveats
 -------
 
