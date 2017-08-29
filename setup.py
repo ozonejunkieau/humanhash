@@ -3,9 +3,8 @@
 
 from distutils.core import setup
 
-with open('README.rst', 'r') as f:
+with open('README.rst', 'r', encoding='utf-8') as f:
     long_description = f.read()
-
 setup(
     name='humanhash3',
     version='0.0.6',
