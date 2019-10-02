@@ -6,9 +6,9 @@ from distutils.core import setup
 with open('README.rst', 'r', encoding='utf-8') as f:
     long_description = f.read()
 setup(
-    name='humanhash3',
+    name='aussiehash',
     version='0.0.6',
-    description='Human-readable representations of digests.',
+    description='Human-readable representations of digests, with an Australian twist.',
     long_description=long_description,
     author='Zachary Voase',
     author_email='z@zacharyvoase.com',

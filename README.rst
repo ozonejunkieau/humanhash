@@ -1,22 +1,10 @@
-humanhash
-=========
+aussiehash
+==========
 
-humanhash provides human-readable representations of digests.
-
-.. image:: https://img.shields.io/travis/blag/humanhash.svg
-    :target: https://travis-ci.org/blag/humanhash
-
-.. image:: https://img.shields.io/coveralls/blag/humanhash.svg
-    :target: https://coveralls.io/github/blag/humanhash
-
-.. image:: https://img.shields.io/pypi/v/humanhash3.svg
-    :target: https://pypi.python.org/pypi/humanhash3
-
-.. image:: https://img.shields.io/pypi/l/humanhash3.svg
-    :target: https://github.com/blag/humanhash/blob/master/UNLICENSE
-
-.. image:: https://img.shields.io/pypi/pyversions/humanhash3.svg
-    :target: https://github.com/blag/humanhash/blob/master/.travis.yml
+``aussiehash`` provides human-readable representations of digests.
+Based on the ``humanhash`` codebase at https://github.com/blag/humanhash,
+the dictionary has been updated to provide an Australian localisation. The
+word list has been filtered to be SFW, use at your own discretion though!
 
 Example
 -------
@@ -27,22 +15,22 @@ Example
 
     >>> digest = '7528880a986c40e78c38115e640da2a1'
     >>> humanhash.humanize(digest)
-    'three-georgia-xray-jig'
+    'sunnies-drink-woop-garbo'
     >>> humanhash.humanize(digest, words=6)
-    'high-mango-white-oregon-purple-charlie'
+    'station-yabby-piker-pav-cockie-apples'
 
     >>> humanhash.uuid()
-    ('potato-oranges-william-friend', '9d2278759ae24698b1345525bd53358b')
+    ('furphy-back-daks-wombat', '8cdfd5e0ba2b48de89c8989f62a985b4')
 
 Install
 -------
 
-This module is available on PyPI as the ``humanhash3`` package. You can install
-it with ``pip``:
+This module is NOT YET available on PyPI as the ``aussiehash`` package. You can however
+install it with ``pip``:
 
 .. code-block:: bash
 
-    $ pip install humanhash3
+    $ pip install git+https://github.com/ozonejunkieau/humanhash.git
 
 Caveats
 -------
